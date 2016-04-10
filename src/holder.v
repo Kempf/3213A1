@@ -12,9 +12,11 @@ module holder (
 	reg fin = 1'b0;
 	reg write_deb;
 	
+	clockdiv #(15,5207) clockdiv(.sysclk(sysclk),.pulse(pulse));
+	
 	debouncer debouncer_write(.sysclk(sysclk),.btn(write),.btn_deb(write_deb));
     
-    always @(posedge sysclk) begin
+    always @(posedge clockdiv) begin
 		if ((write_deb == 0)&&(out == 0)) fin = 0;
 	 	if ((out == 1)&&(count < total)&&(fin == 0))
 			begin
@@ -40,4 +42,3 @@ module holder (
 			end
 		end
 endmodule
-
