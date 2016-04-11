@@ -24,7 +24,9 @@
 * **[working]** `debouncer.v` - pushbutton single pulse (TB in `/src/tb/tb_debouncer.v`)
 * **[working]** `keyboard.v` - main file, instantiates all others and reads input (TB in `/src/tb/tb_keyboard.v`)
 * **[working]** `rom1.v` -- `rom4.v` - store words
-* **[untested]** `wordgen.v` - word generator for function 2
+* **[fucked up]** `wordgen.v` - word generator for function 2, depricated
+* **[tested]** `sendword.v` - word sender
+* **[tested]** `switch.v` - controller for word sender, no auto mode yet
 * **[partially tested]** `control.v` - word generalor for function 2 - Steves version
 
 ###Labs

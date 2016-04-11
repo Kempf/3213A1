@@ -22,7 +22,7 @@ module tb_control;
 		.sw2(sw2), 
 		.sw3(sw3), 
 		.sw4(sw4), 
-		.out(out)
+		.out_fin(out)
 	);
 	
 	 initial begin
@@ -65,4 +65,3 @@ module tb_control;
 	end
       
 endmodule
-
