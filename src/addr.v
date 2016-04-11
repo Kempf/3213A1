@@ -1,11 +1,11 @@
 module addr( 
+	input wire clk,
 	input wire [7:0] count,
-	input wire pulse,
-	output reg [4:0] addr
+	output reg [3:0] addr
     );
 
 
-	always @(posedge sysclk) begin
+	always @(posedge clk) begin
 		if (count < 13) addr <= 4'b0000;
 		else if ((count > 12) && (count < 26)) addr <= 4'b0001;
 		else if ((count > 25) && (count < 39)) addr <= 4'b0010;
@@ -22,7 +22,7 @@ module addr(
 		else if ((count > 168) && (count < 172)) addr <= 4'b1101;
 		else if ((count > 171) && (count < 185)) addr <= 4'b1110;
 		else if ((count > 184) && (count < 198)) addr <= 4'b0010;
-		else addr = 4'b0000;
+		else addr <= 4'b0000;
 	end
 
 endmodule
