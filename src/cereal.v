@@ -3,7 +3,7 @@ module cereal (input wire sysclk,
                input wire start,
                output reg cereal,
                output reg status,
-					output wire pulse);
+               output wire pulse);
   
   //wire pulse;
   
@@ -35,6 +35,7 @@ module cereal (input wire sysclk,
   always @(posedge sysclk) begin
 		if(start) start_latch <= 1'b1;
 		else if (!status) start_latch <= 1'b0;
+        else if (data_latch == 8'b00000000) start_latch <= 1'b0;
   end
   
   //next state
