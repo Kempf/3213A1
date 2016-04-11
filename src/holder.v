@@ -5,18 +5,19 @@ module holder (
 	input wire sw2,
 	input wire sw3,
 	input wire sw4,
-	output reg out);
+	output reg out,
+	output wire clk);
 
 	reg [8:0] total = 9'b000000000;
 	reg [8:0] count = 9'b000000000;
 	reg fin = 1'b0;
 	reg write_deb;
 	
-	clockdiv #(15,5207) clockdiv(.sysclk(sysclk),.pulse(pulse));
+	clockdiv #(15,5207) clockdiv(.sysclk(sysclk),.pulse(clk));
 	
 	debouncer debouncer_write(.sysclk(sysclk),.btn(write),.btn_deb(write_deb));
     
-    always @(posedge clockdiv) begin
+    always @(posedge clk) begin
 		if ((write_deb == 0)&&(out == 0)) fin = 0;
 	 	if ((out == 1)&&(count < total)&&(fin == 0))
 			begin
