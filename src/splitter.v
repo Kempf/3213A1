@@ -10,40 +10,40 @@ module splitter (
 	input wire [7:0] rom3,
 	input wire [7:0] rom4,
 	output reg [7:0] currentData,
-		output reg [7:0] count);
+	output reg [7:0] count);
 
 	// Is this correct syntax?
 	reg [1:0] signum = 2'b00;
-	reg [3:0] count13;
+	reg [3:0] count11;
 	
     // next state
     always @(posedge clk) begin
 		if (holder == 1)
 			begin
-				if ((signum == 0) && (count == 142))
+				if ((signum == 0) && (count == 120))
 					begin 
+						count <= 8'b00000000;
 						signum <= 1;
-						count <= 0;
 					end
-				else if ((signum == 1) && (count == 109))
+				if ((signum == 1) && (count == 109))
 					begin 
 						signum <= 2;
 						count <= 0;
 					end
-				else if ((signum == 2) && (count == 76))
+				if ((signum == 2) && (count == 76))
 					begin 
 						signum <= 3;
 						count <= 0;
 					end
-				else if ((signum == 3) && (count == 43))
+				if ((signum == 3) && (count == 43))
 					begin 
 						signum <= 0;
 						count <= 0;
 					end
 				else 	count <= count + 1;
 				
-				if (count13 == 12) count13<=4'b0000;
-				else count13 <= count13 + 1;
+				if (count11 == 10) count11<=4'b0000;
+				else count11 <= count11 + 1;
 				
 				if ((sw1 == 1) && (signum == 0))
 					begin 
@@ -67,7 +67,7 @@ module splitter (
 			begin
 				signum <= 0;
 				count <= 0;
-				count13 <= 0;
+				count11 <= 0;
 				currentData <= 8'b00000000;
 			end
 		end
