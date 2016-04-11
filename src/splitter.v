@@ -1,5 +1,5 @@
 module splitter (
-	input wire sysclk,
+	input wire clk,
 	input wire sw1,
 	input wire sw2,
 	input wire sw3,
