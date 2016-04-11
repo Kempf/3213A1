@@ -1,4 +1,4 @@
-module control (input wire sysclk, input wire write, input wire sw1, input wire sw2, input wire sw3, input wire sw4, output wire out_fin);
+module control (input wire sysclk, input wire write, input wire sw1, input wire sw2, input wire sw3, input wire sw4, output wire out_fin, output wire [7:0] data_latch);
 
 
 	wire [7:0] currentData;
@@ -9,6 +9,7 @@ module control (input wire sysclk, input wire write, input wire sw1, input wire 
 	wire [7:0] d4;
 	wire [7:0] count;
 	wire clk;
+	wire forCereal;
 	
     // rom instances
     rom1 rom1(.data(d1),.addr(addr));
@@ -16,13 +17,13 @@ module control (input wire sysclk, input wire write, input wire sw1, input wire 
     rom3 rom3(.data(d3),.addr(addr));
     rom4 rom4(.data(d4),.addr(addr));
     
-	holder holder(.sysclk(sysclk), .write(write), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .out(holderOut), .clk(clk));
+	holder holder(.sysclk(sysclk), .write(write), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .out(holderOut), .clk(clk), .forCereal(forCereal));
 	
 	splitter splitter(.clk(clk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .holder(holderOut), .rom1(d1), .rom2(d2), .rom3(d3), .rom4(d4), .currentData(currentData), .count(count));
 	
 	addr addr1(.clk(clk), .count(count), .addr(addr));
 	
-	cereal cereal(.sysclk(sysclk),.data(currentData),.start(holderOut),.cereal(out_fin),.status(),.pulse());
+	cereal cereal(.sysclk(sysclk),.data(currentData),.start(forCereal),.cereal(out_fin),.status(),.pulse(), .data_latch(data_latch));
 	 
 
 endmodule
