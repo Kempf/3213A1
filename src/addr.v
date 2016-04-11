@@ -1,6 +1,6 @@
 module addr( 
 	input wire [7:0] count,
-	input wire sysclk,
+	input wire pulse,
 	output reg [4:0] addr
     );
 
