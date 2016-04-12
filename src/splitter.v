@@ -18,24 +18,32 @@ module splitter (
 	
     // next state
     always @(posedge clk) begin
+		if (holder == 0) begin
+			if (sw1 == 1) signum <= 0;
+			else if (sw2 == 1) signum <= 1;
+			else if (sw3 == 1) signum <= 2;
+			else if (sw4 == 1) signum <= 3;
+			else signum <= 0;
+		end
+	
 		if (holder == 1)
 			begin
-				if ((signum == 0) && (count == 120))
+				if ((signum == 0) && (count == 131))
 					begin 
 						count <= 8'b00000000;
 						signum <= 1;
 					end
-				if ((signum == 1) && (count == 109))
+				else if ((signum == 1) && (count == 120))
 					begin 
 						signum <= 2;
 						count <= 0;
 					end
-				if ((signum == 2) && (count == 76))
+				else if ((signum == 2) && (count == 87))
 					begin 
 						signum <= 3;
 						count <= 0;
 					end
-				if ((signum == 3) && (count == 43))
+				else if ((signum == 3) && (count == 54))
 					begin 
 						signum <= 0;
 						count <= 0;
