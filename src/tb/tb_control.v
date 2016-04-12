@@ -10,6 +10,7 @@ module tb_control;
 	reg sw2;
 	reg sw3;
 	reg sw4;
+	reg auto;
 
 	// Outputs
 	wire out;
@@ -22,7 +23,8 @@ module tb_control;
 		.sw2(sw2), 
 		.sw3(sw3), 
 		.sw4(sw4), 
-		.out_fin(out)
+		.out_fin(out),
+		.auto(auto)
 	);
 	
 	 initial begin
@@ -37,16 +39,16 @@ module tb_control;
         sw2 = 1'b0;
         sw3 = 1'b0;
         sw4 = 1'b0;
+		  auto = 1'b0;
         write = 1'b0;
         #1000 sw1 = 1'b1;
         #5000 sw1 = 1'b0;
         #6000 write = 1'b1;
         #407000 write = 1'b0;
-        #410000 sw1 = 1'b1;
+        #410000 sw2 = 1'b1;
         #415000 write = 1'b1;
         #820000 write = 1'b0;
-        #825000 sw1 = 1'b1;
-        #830000 sw1 = 1'b1;
+        #825000 sw2 = 1'b1;
         #830000 sw2 = 1'b1;
         #830000 sw3 = 1'b1;
         #832000 write = 1'b1;
@@ -58,7 +60,10 @@ module tb_control;
         #1850000 sw3 = 1'b0;
         #1850000 sw4 = 1'b0;
         #1870000 write = 1'b0;
-        #2000000; $finish;
+		  #2000000 sw2 = 1'b1;
+		  #2050000 auto = 1'b1;
+		  #2950000 auto = 1'b0;
+        #3000000; $finish;
         
 		// Add stimulus here
 
