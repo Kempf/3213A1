@@ -78,40 +78,41 @@ module splitter (
 				else if (sw4 == 1) signum <= 3;
 				else signum <= 0;
 			end
-		end
+			
+			
 		if (auto_latch == 1)
 			begin
 				if ((signum == 0) && (count == 131))
 					begin 
 						count <= 0;
-						if (sw2_latch==1) <= signum = 1;
-						else if (sw3_latch == 1) <= 2;
-						else if (sw4_latch == 1) <= 3;
-						else signum = 0;
+						if (sw2_latch==1) signum <= 1;
+						else if (sw3_latch == 1) signum <= 2;
+						else if (sw4_latch == 1) signum <= 3;
+						else signum <= 0;
 					end
 				else if ((signum == 1) && (count == 120))
 					begin 
 						count <= 0;
-						if (sw3_latch==1) <= signum = 2;
-						else if (sw4_latch == 1) <= 3;
-						else if (sw1_latch == 1) <= 0;
-						else signum = 1;
+						if (sw3_latch==1) signum <= 2;
+						else if (sw4_latch == 1) signum <= 3;
+						else if (sw1_latch == 1) signum <= 0;
+						else signum <= 1;
 					end
 				else if ((signum == 2) && (count == 87))
 					begin 
 						count <= 0;
-						if (sw4_latch==1) <= signum = 3;
-						else if (sw1_latch == 1) <= 0;
-						else if (sw2_latch == 1) <= 1;
-						else signum = 2;
+						if (sw4_latch==1) signum <= 3;
+						else if (sw1_latch == 1) signum <= 0;
+						else if (sw2_latch == 1) signum <= 1;
+						else signum <= 2;
 					end
 				else if ((signum == 3) && (count == 54))
 					begin 
 						count <= 0;
-						if (sw1_latch==1) <= signum = 0;
-						else if (sw2_latch == 1) <= 1;
-						else if (sw3_latch == 1) <= 2;
-						else signum = 3;
+						if (sw1_latch==1) signum <= 0;
+						else if (sw2_latch == 1) signum <= 1;
+						else if (sw3_latch == 1) signum <= 2;
+						else signum <= 3;
 					end
 				else 	count <= count + 1;
 				
@@ -147,6 +148,5 @@ module splitter (
 				else if (sw4 == 1) signum <= 3;
 				else signum <= 0;
 			end
-		end
 		end
 endmodule
