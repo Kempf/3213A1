@@ -5,6 +5,7 @@ module splitter (
 	input wire sw3,
 	input wire sw4,
 	input wire holder,
+	input wire auto_latch,
 	input wire sw1_latch,
 	input wire sw2_latch,
 	input wire sw3_latch,
@@ -136,17 +137,6 @@ module splitter (
 						currentData <= rom4;
 					end
 				else currentData <= 8'b00000000;
-			end
-		else 
-			begin
-				count <= 0;
-				count11 <= 0;
-				currentData <= 8'b00000000;
-				if (sw1 == 1) signum <= 0;
-				else if (sw2 == 1) signum <= 1;
-				else if (sw3 == 1) signum <= 2;
-				else if (sw4 == 1) signum <= 3;
-				else signum <= 0;
 			end
 		end
 endmodule
