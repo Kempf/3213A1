@@ -6,6 +6,10 @@ module holder (
 	input wire sw2,
 	input wire sw3,
 	input wire sw4,
+	output reg sw1_latch,
+	output reg sw2_latch,
+	output reg sw3_latch,
+	output reg sw4_latch,
 	output reg out,
 	output wire clk,
 	output reg forCereal);
@@ -16,7 +20,6 @@ module holder (
 	reg deb = 1'b0;
 	reg [8:0] count = 9'b000000000;
 	reg latch = 1'b0;
-	reg switchIns = 4'b0000;
 	wire auto_deb;
 	reg auto_latch;
 	reg [9:0] cycle_len = 9'b000000000;
@@ -32,24 +35,31 @@ module holder (
 		if (auto_deb == 1) begin
 			if ((out == 0) && (auto_latch == 0)) begin
 				auto_latch <= 1;
-				switchIns <= (sw1 * 1) + (sw2 * 2) + (sw3 * 4) + (sw4 * 8);
 				cycle_len <= (sw1 * 131) + (sw2 * 120) + (sw3 * 87) + (sw4 * 54);
+				if (sw1 == 1) sw1_latch <= 1;
+				if (sw2 == 1) sw2_latch <= 1;
+				if (sw3 == 1) sw3_latch <= 1;
+				if (sw4 == 1) sw4_latch <= 1;
 			end
 			else begin
 				auto_latch <= 0;
 				switchIns = 0;
 				cycle_len = 0;
+				sw1_latch <= 0;
+				sw2_latch <= 0;
+				sw3_latch <= 0;
+				sw4_latch <= 0;
 			end
 		end	
 	end
-
+	
     always @(posedge clk) begin
 		if(auto == 0) 
 		begin 
 			if (out == 1) forCereal = 1;
 			else forCereal = 0;
 			if (deb == 1 && ((sw1==1)||(sw2==1)||(sw3==1)||(sw4==1))) latch <= 1;								// Creates a local latch from the debounced value
-			if ((write == 0)&&(out == 0)) fin <= 0;			// Resents the finished value when everything is done
+			if ((write == 0)&&(out == 0)) fin <= 0;			// Resets the finished value when everything is done
 			if ((out == 1)&&(count < total)&&(fin == 0))
 				begin
 					count <= count + 1;
@@ -57,10 +67,6 @@ module holder (
 			else if ((latch == 1) && (out == 0) && (fin == 0) && ((sw1==1)||(sw2==1)||(sw3==1)||(sw4==1)))
 				begin
 					total <= (sw1 * 131) + (sw2 * 120) + (sw3 * 87) + (sw4 * 54); //Currently increased by 1
-	/*				if (sw1 == 1) total <= total + 143;
-					if (sw2 == 1) total <= total + 130;
-					if (sw3 == 1) total <= total + 91;
-					if (sw4 == 1) total <= total + 52;*/
 					out <= 1;
 				end
 			else if ((out == 1)&&(count == total))					
