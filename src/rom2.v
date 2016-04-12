@@ -11,6 +11,7 @@ module rom2 (input wire [3:0] addr, output reg [7:0] data);
             4'b0111: data = 8'b01000101; // E
             4'b1000: data = 8'b01001110; // N
             4'b1001: data = 8'b01010100; // T
+			4'b1010: data = 8'b00100000;
             default: data = 8'b00000000;
         endcase
     end
