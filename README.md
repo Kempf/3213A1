@@ -7,7 +7,7 @@
 ###TODO
 
 * Watch mini-lecture on serial comms
-* Thorough testing of Function 2
+* Implementation of Function 2
 * Function 3
 * Combine all in one
 
@@ -27,7 +27,7 @@
 * **[fucked up]** `wordgen.v` - word generator for function 2, depricated
 * **[tested]** `sendword.v` - word sender
 * **[tested]** `switch.v` - controller for word sender, no auto mode yet
-* **[partially tested]** `control.v` - word generalor for function 2 - Steves version
+* **[tested]** `control.v` - word generalor for function 2 - Steves version - Woeking
 
 ###Labs
 
