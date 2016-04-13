@@ -7,7 +7,7 @@
 ###TODO
 
 * Watch mini-lecture on serial comms
-* Implementation of Function 2
+* Implementation of Function 2 - Incorporate the 'one word per second requirement'
 * Function 3
 * Combine all in one
 
