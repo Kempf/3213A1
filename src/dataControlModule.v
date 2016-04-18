@@ -25,12 +25,14 @@ module dataControlModule(
 	 
 	 
 always @(posedge sysclk) begin
-	if (trigger == 1) start <= 1; 
+	if ((serialIn == 0)&&(start==0) trigger <= 1; 
+	else if ((start == 0)) trigger <= 0;
 	if (send == 1) send_latch <= 1;
 	if (send_latch && (sendWords == storedWords)) send_latch <= 0;
 end
 	 
 always @(posedge clk) begin
+	if (trigger == 1) start <= 1;
 	if (reset) begin
 		count <= 0;
 		start <= 0;
