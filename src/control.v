@@ -1,4 +1,4 @@
-module control (input wire sysclk, input wire write, input wire auto, input wire sw1, input wire sw2, input wire sw3, input wire sw4, output wire out_fin, output wire [7:0] data_latch);
+module control (input wire sysclk, input wire write, input wire reset, input wire auto, input wire sw1, input wire sw2, input wire sw3, input wire sw4, output wire out_fin, output wire [7:0] data_latch, output wire out_debug);
 
 	wire holderOut;
 	wire holderAutoLatch;
@@ -15,6 +15,10 @@ module control (input wire sysclk, input wire write, input wire auto, input wire
 	wire sw3_latch;
 	wire sw4_latch;
 	wire trig;
+	assign out_debug = out_fin;
+/*	wire [7:0] data;
+	assign data = 8'b01010101;*/
+	wire [3:0] count11;
 	
     // rom instances
     rom1 rom1(.data(d1),.addr(addr));
@@ -22,13 +26,15 @@ module control (input wire sysclk, input wire write, input wire auto, input wire
     rom3 rom3(.data(d3),.addr(addr));
     rom4 rom4(.data(d4),.addr(addr));
     
-	holder holder(.sysclk(sysclk), .write(write), .auto(auto), .sw1(sw1), .sw2(sw2), .sw3(sw3), .outTrig(trig), .sw4(sw4), .sw1_latch(sw1_latch), .sw2_latch(sw2_latch), .sw3_latch(sw3_latch), .sw4_latch(sw4_latch), .out(holderOut), .auto_latch(holderAutoLatch), .clk(clk));
+	holder holder(.sysclk(sysclk), .write(write), .auto(auto), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .sw1_latch(sw1_latch), .sw2_latch(sw2_latch), .reset(reset), .sw3_latch(sw3_latch), .sw4_latch(sw4_latch), .out(holderOut), .auto_latch(holderAutoLatch), .clk(clk));
 	
-	splitter splitter(.clk(clk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .sw1_latch(sw1_latch), .sw2_latch(sw2_latch), .sw3_latch(sw3_latch), .sw4_latch(sw4_latch), .holder(holderOut), .auto_latch(holderAutoLatch), .rom1(d1), .rom2(d2), .rom3(d3), .rom4(d4), .currentData(currentData), .count(count));
+	splitter splitter(.count11(count11), .reset(reset), .sysclk(sysclk), .outTrig(trig), .clk(clk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .sw1_latch(sw1_latch), .sw2_latch(sw2_latch), .sw3_latch(sw3_latch), .sw4_latch(sw4_latch), .holder(holderOut), .auto_latch(holderAutoLatch), .rom1(d1), .rom2(d2), .rom3(d3), .rom4(d4), .currentData(currentData), .count(count));
 	
-	addr addr1(.sysclk(sysclk), .count(count), .addr(addr));
+	addr addr1(.clk(clk), .count(count), .addr(addr));
 	
-	cereal cereal(.sysclk(sysclk),.data(currentData),.start(trig),.cereal(out_fin),.status(),.pulse(), .data_latch(data_latch));
+	cereal cereal(.sysclk(sysclk),.data(currentData),.start(trig),.cereal(out_fin),.status(),.pulse());
 	 
 
+	
+	
 endmodule
