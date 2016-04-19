@@ -17,41 +17,44 @@ module splitter (
 	input wire [7:0] rom3,
 	input wire [7:0] rom4,
 	output reg [7:0] currentData,
-	output reg [7:0] count,
-	output reg outTrig,
-	output reg [3:0] count11);
+	output reg [9:0] count,
+	output reg outTrig);
 
 	// Is this correct syntax?
 	reg [1:0] signum;
+	reg [3:0] count11;
 	//reg [3:0] count11;
 	
 	always @(posedge sysclk) begin
-		if (holder && (count11 == 1)) begin outTrig <= 1; end
+		if (((holder==1) || (auto_latch==1)) && (count11 == 3)) begin outTrig <= 1; end
 		else begin outTrig <= 0; end
 	end
 
 	
     // next state
-    always @(posedge clk) begin
-	 if (reset) signum <= 2'b00;
-	else begin if (holder == 1)
+   always @(posedge clk) begin
+	if (reset) signum <= 2'b00;
+	else begin if ((holder == 1) && (auto_latch == 0))
 			begin
 				if ((signum == 0) && (count == 155))
 					begin 
-						count <= 8'b00000000;
-						signum <= 1;
+						count <= 0;
+						if (sw2) signum <= 1;
+						else if (sw3) signum <= 2;
+						else if (sw4) signum <= 3;
 					end
 				else if ((signum == 1) && (count == 142))
 					begin 
-						signum <= 2;
+						if (sw3) signum <= 2;
+						else if (sw4) signum <= 3;
 						count <= 0;
 					end
-				else if ((signum == 2) && (count == 116))
+				else if ((signum == 2) && (count == 103))
 					begin 
-						signum <= 3;
+						if (sw4) signum <= 3;
 						count <= 0;
 					end
-				else if ((signum == 3) && (count == 77))
+				else if ((signum == 3) && (count == 65))
 					begin 
 						signum <= 0;
 						count <= 0;
@@ -110,7 +113,7 @@ module splitter (
 						else if (sw1_latch == 1) signum <= 0;
 						else signum <= 1;
 					end
-				else if ((signum == 2) && (count == 116))
+				else if ((signum == 2) && (count == 103))
 					begin 
 						count <= 0;
 						if (sw4_latch==1) signum <= 3;
@@ -118,7 +121,7 @@ module splitter (
 						else if (sw2_latch == 1) signum <= 1;
 						else signum <= 2;
 					end
-				else if ((signum == 3) && (count == 77))
+				else if ((signum == 3) && (count == 65))
 					begin 
 						count <= 0;
 						if (sw1_latch==1) signum <= 0;
