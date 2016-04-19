@@ -11,6 +11,7 @@ module tb_control;
 	reg sw3;
 	reg sw4;
 	reg auto;
+	reg reset;
 
 	// Outputs
 	wire out;
@@ -24,7 +25,8 @@ module tb_control;
 		.sw3(sw3), 
 		.sw4(sw4), 
 		.out_fin(out),
-		.auto(auto)
+		.auto(auto),
+		.reset(reset)
 	);
 	
 	 initial begin
@@ -41,15 +43,17 @@ module tb_control;
         sw4 = 1'b0;
 		  auto = 1'b0;
         write = 1'b0;
+		  reset = 1'b1;
         #1000 sw1 = 1'b1;
         #5000 sw1 = 1'b0;
+		  #5000 reset = 1'b0;
         #6000 write = 1'b1;
         #407000 write = 1'b0;
-        #410000 sw2 = 1'b1;
+        #410000 sw1 = 1'b1;
         #415000 write = 1'b1;
         #820000 write = 1'b0;
-        #825000 sw2 = 1'b1;
-        #830000 sw2 = 1'b1;
+        #825000 sw1 = 1'b1;
+        #830000 sw1 = 1'b1;
         #830000 sw3 = 1'b1;
         #832000 write = 1'b1;
         #1235000 write = 1'b0;
