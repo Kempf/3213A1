@@ -38,7 +38,7 @@ module killmenow (input wire sysclk, input wire sw1, input wire sw2, input wire 
     parameter W2SP = 7'b0111110; // _
     parameter W3SP = 7'b0111101; // _
     parameter W4SP = 7'b0111100; // _
-	parameter O1L1 = 7'b1000001; // E
+    parameter O1L1 = 7'b1000001; // E
     parameter O1L2 = 7'b1000010; // N
     parameter O1L3 = 7'b1000011; // G
     parameter O1L4 = 7'b1000100; // I
@@ -80,13 +80,12 @@ module killmenow (input wire sysclk, input wire sw1, input wire sw2, input wire 
     wire write_deb;
     wire auto_deb;
     wire cereal_ready;
-    wire pulse;
     wire slowclk;
     reg start;
     reg [7:0] data = 8'b00000000;
     
     // inst cereal
-    cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out),.status(cereal_ready),.pulse(pulse));
+    cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out),.status(cereal_ready));
     
     // slow clock
     clockdiv #(25/*19*/) clockdiv(.sysclk(sysclk),.pulse(slowclk));
@@ -97,13 +96,6 @@ module killmenow (input wire sysclk, input wire sw1, input wire sw2, input wire 
     
     // state memory
     always @(posedge sysclk) state <= next;
-    
-    // output latch
-    reg latch = 1'b0;
-    
-    always @(posedge sysclk) begin
-        latch <= cereal_ready;
-    end
     
     // auto mode
     reg auto_on = 1'b0;
