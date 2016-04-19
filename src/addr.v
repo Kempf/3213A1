@@ -1,14 +1,10 @@
 module addr( 
 	input wire clk,
-	input wire [7:0] count,
-	output reg [3:0] addr,
-	output reg outTrig
+	input wire [9:0] count,
+	output reg [3:0] addr
     );
 
 	always @(posedge clk) begin
-		if (count == 1) outTrig <= 1;
-		else outTrig <= 0;
-	
 		if (count < 13) addr <= 4'b0000;
 		else if ((count > 12) && (count < 26)) addr <= 4'b0001;
 		else if ((count > 25) && (count < 39)) addr <= 4'b0010;
