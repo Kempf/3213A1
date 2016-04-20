@@ -40,72 +40,72 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
         // set char counts addr for ROM
 		case(in)
 			4'b0000: begin
-				if(btn_deb) total <= 6'b000000;
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b000000;
 				addr <= 6'b000000;
 			end
 			4'b0001: begin
-				if(btn_deb) total <= 6'b001101; // 13
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b001101; // 13
 				addr <= count;
 			end
 			4'b0010: begin
-				if(btn_deb) total <= 6'b001011; // 11
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b001011; // 11
 				addr <= count + 6'b001100;
 			end
 			4'b0011: begin
-				if(btn_deb) total <= 6'b010111; // 23
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010111; // 23
 				addr <= count;
 			end
 			4'b0100: begin
-				if(btn_deb) total <= 6'b001000; // 8
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b001000; // 8
 				addr <= count + 6'b010111;
 			end
 			4'b0101: begin
-				if(btn_deb) total <= 6'b010100; // 20
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010100; // 20
 				if(count > 12) addr <= count + 6'b010111;
 				else addr <= count;
 			end
 			4'b0110: begin
-				if(btn_deb) total <= 6'b010011; // 19
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010011; // 19
 				addr <= count + 6'b001100;
 			end
 			4'b0111: begin
-				if(btn_deb) total <= 6'b011111; // 31
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011111; // 31
 				addr <= count;
 			end
 			4'b1000: begin
-				if(btn_deb) total <= 6'b000101; // 5
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b000101; // 5
 				addr <= count + 6'b011111;
 			end
 			4'b1001: begin
-				if(btn_deb) total <= 6'b010001; // 17
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010001; // 17
 				if(count > 12) addr <= count + 6'b011111;
 				else addr <= count;
 			end
 			4'b1010: begin
-				if(btn_deb) total <= 6'b010000; // 16
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010000; // 16
 				if(count > 11) addr <= count + 6'b011111;
 				else addr <= count + 6'b001100;
 			end
 			4'b1011: begin
-				if(btn_deb) total <= 6'b011100; // 28
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011100; // 28
 				if (count > 23) addr <= count + 6'b011111;
 				else addr <= count;
 			end
 			4'b1100: begin
-				if(btn_deb) total <= 6'b001101; // 13
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b001101; // 13
 				addr <= count + 6'b010111;
 			end
 			4'b1101: begin
-				if(btn_deb) total <= 6'b011001; // 25
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011001; // 25
 				if(count > 12) addr <= count + 6'b010111;
 				else addr <= count;
 			end
 			4'b1110: begin
-				if(btn_deb) total <= 6'b011000; // 24
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011000; // 24
 				addr <= count + 6'b001100;
 			end
 			4'b1111: begin
-				if(btn_deb) total <= 6'b100100; // 36
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b100100; // 36
 				addr <= count;
 			end
 			default: begin
