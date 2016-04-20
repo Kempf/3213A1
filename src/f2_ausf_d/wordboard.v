@@ -23,7 +23,7 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 	// character pulse
 	clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
     // slow clock
-    clockdiv #(25) clockdiv(.sysclk(sysclk),.pulse(slowclk));	
+    clockdiv #(/*19*/25) clockdiv(.sysclk(sysclk),.pulse(slowclk));	
 	// instantiate rom
 	rom rom(.addr(addr),.data(data));
 	

@@ -32,12 +32,11 @@ module TB_wordboard;
         sw2 = 1'b0;
         sw3 = 1'b0;
         sw4 = 1'b1;
-        btn_write = 1'b0;
-        #500000 btn_write = 1'b1;
-        #400000 btn_write = 1'b0;
-        #2000000 sw1 = 1'b1;
-        #200 btn_write = 1'b1;
-        #400000 btn_write = 1'b0;
+        btn_auto = 1'b0;
+        #500000 btn_auto = 1'b1;
+        #400000 btn_auto = 1'b0;
+        #9000000 btn_auto = 1'b1;
+        #400000 btn_auto = 1'b0;
         #2000000 $finish;
     end
 
