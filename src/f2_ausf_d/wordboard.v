@@ -1,4 +1,4 @@
-module keyboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output wire out, output wire pulse);
+module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output wire out, output wire pulse);
 
 	wire btn_deb;
 	wire auto_deb;
@@ -11,12 +11,14 @@ module keyboard (input wire sysclk, input wire sw1, input wire sw2, input wire s
 	reg btn_latch = 1'b0;
 	reg [5:0] total = 6'b000000;
 	reg [5:0] addr;
-		 
+    reg [1:0] delay;
+    reg start_delayed;
+    
 	// inst debouncer
 	debouncer w_debouncer(.sysclk(sysclk),.btn(btn_write),.btn_deb(btn_deb));
 	debouncer a_debouncer(.sysclk(sysclk),.btn(btn_auto),.btn_deb(auto_deb));
 	// inst cereal
-	cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out),.status(status),.pulse(pulse));
+	cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out),.status(status),.pulse(pulse));
 	// character pulse
 	clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
 	// instantiate rom
@@ -39,7 +41,7 @@ module keyboard (input wire sysclk, input wire sw1, input wire sw2, input wire s
 				addr <= 6'b000000;
 			end
 			4'b0001: begin
-				if(btn_deb) total <= 6'b001100; // 12
+				if(btn_deb) total <= 6'b001101; // 13
 				addr <= count;
 			end
 			4'b0010: begin
@@ -115,13 +117,15 @@ module keyboard (input wire sysclk, input wire sw1, input wire sw2, input wire s
 			count <= 6'b000000;
 		end
 
-		if(btn_latch && char_pulse) begin     // start transmission
-			start <= 1'b1;
-			count <= count + 6'b000001;
-		end
-		else begin
-			start <= 1'b0;
-		end
+		if(btn_latch && char_pulse) begin
+            count <= count + 6'b000001; // next letter
+            start <= 1'b1; // start transmission
+        end
+        else start <= 1'b0;
+        
+        // delay start signal
+        delay[0] <= start;
+        delay[1] <= delay[0];
+        start_delayed <= delay[1];
 	end
-    
 endmodule

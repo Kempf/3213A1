@@ -1,6 +1,6 @@
 `timescale 10ns / 10ns
 
-module TB_keyboard;
+module TB_wordboard;
 
     reg sysclk;
     reg sw1, sw2, sw3, sw4;
@@ -8,7 +8,7 @@ module TB_keyboard;
     wire out;
 
 
-    keyboard UUT( 
+    wordboard UUT( 
         .sysclk(sysclk),
         .sw1(sw1),
         .sw2(sw2),
@@ -26,19 +26,19 @@ module TB_keyboard;
     end
     
     initial begin
-        $dumpfile("keyboard.vcd");
+        $dumpfile("wordboard.vcd");
         $dumpvars;
-        sw1 = 1'b1;
+        sw1 = 1'b0;
         sw2 = 1'b0;
         sw3 = 1'b0;
-        sw4 = 1'b0;
-        btn = 1'b0;
-        #500 btn_write = 1'b1;
+        sw4 = 1'b1;
+        btn_write = 1'b0;
+        #500000 btn_write = 1'b1;
         #400000 btn_write = 1'b0;
-        #400000 sw2 = 1;
-        #100 btn = 1'b1;
-        #400000 btn = 1'b0;
-        #1000000; $finish;
+        #2000000 sw1 = 1'b1;
+        #200 btn_write = 1'b1;
+        #400000 btn_write = 1'b0;
+        #2000000 $finish;
     end
 
 endmodule
