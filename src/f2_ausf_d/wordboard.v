@@ -1,40 +1,43 @@
 module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output wire out, output wire pulse);
 
-	wire btn_deb;
+	wire btn_deb;                   // debounced inputs
 	wire auto_deb;
-	reg start; //hold time of 5702 clock cycles
-	wire status; //cereal status
-	wire [3:0] in;
-	wire [7:0] data;
-	wire char_pulse;
-	reg [5:0] count = 6'b000000;
-	reg btn_latch = 1'b0;
-	reg [5:0] total = 6'b000000;
-	reg [5:0] addr;
-    reg [1:0] delay;
+    reg auto_on = 1'b0;             // auto mode on/off
+	reg start;                      // cereal start trigger
+	wire [3:0] in;                  // switches go here
+	wire [7:0] data;                // ASCII goes here
+	wire char_pulse;                // heartbeat for outputing characters
+    wire slowclk;                   // heartbeat for outputing words in auto mode
+	reg [5:0] count = 6'b000000;    // character count
+	reg btn_latch = 1'b0;           // write button latch
+	reg [5:0] total = 6'b000000;    // total character count
+	reg [5:0] addr;                 // ROM address
+    reg [1:0] delay;                // flip-flop for delaying things
     reg start_delayed;
     
 	// inst debouncer
 	debouncer w_debouncer(.sysclk(sysclk),.btn(btn_write),.btn_deb(btn_deb));
 	debouncer a_debouncer(.sysclk(sysclk),.btn(btn_auto),.btn_deb(auto_deb));
 	// inst cereal
-	cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out),.status(status),.pulse(pulse));
+	cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out),.pulse(pulse));
 	// character pulse
 	clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
+    // slow clock
+    clockdiv #(25) clockdiv(.sysclk(sysclk),.pulse(slowclk));	
 	// instantiate rom
 	rom rom(.addr(addr),.data(data));
 	
-	// assemble input
+    // assemble input
 	assign in[0] = sw1;
 	assign in[1] = sw2;
 	assign in[2] = sw3;
 	assign in[3] = sw4;
-
-	// set data to send
 	
 	// send
 	always @(posedge sysclk) begin
-
+        // turn auto output on/off
+        if(auto_deb) auto_on = ~auto_on;
+        // set char counts addr for ROM
 		case(in)
 			4'b0000: begin
 				if(btn_deb) total <= 6'b000000;
@@ -110,8 +113,8 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= 0;
 			end
 		endcase
-
-		if(btn_deb) btn_latch <= 1'b1;
+        
+		if(btn_deb || (slowclk && auto_on)) btn_latch <= 1'b1;
 		else if (count == total) begin
 			btn_latch <= 1'b0;
 			count <= 6'b000000;
