@@ -97,6 +97,5 @@ module tweetboard (input wire active, input wire sysclk, input wire reset, input
   				endcase
   				end
   		end
-  		end
 	end
 endmodule
