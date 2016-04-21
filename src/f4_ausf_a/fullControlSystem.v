@@ -5,12 +5,13 @@ module fullControlSystem(
 	input wire sw3,
 	input wire sw4,
 	input wire write,
+	input wire writeNorth,
 	input wire auto,
 	input wire reset,
 	input wire stateChange,
 	input wire serialIn,
 	output reg out_final,
-	output reg [2:0] LEDs
+	output reg [3:0] LEDs
     );
 	 
 	reg active1;
@@ -31,7 +32,7 @@ module fullControlSystem(
 	 
 	keyboard keyboard(.active(active1), .sysclk(sysclk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .btn(write), .out(out1));
 	wordboard wordboard(.active(active2), .sysclk(sysclk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .btn_write(write), .btn_auto(auto), .out(out2));
-	tweetboard tweetboard(.active(active3), .sysclk(sysclk), .reset(reset), .serialIn(serialIn), .btn_write(write), .out(out3));
+	tweetboard tweetboard(.active(active3), .sysclk(sysclk), .reset(reset), .serialIn(serialIn), .btn_write(writeNorth), .out(out3));
 
 	always @(posedge sysclk) begin
 		if (stateChange_deb) state <= next;
