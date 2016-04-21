@@ -23,8 +23,8 @@
 * **[working]** `clockdiv.v` - variable rate heartbeat
 * **[working]** `debouncer.v` - pushbutton single pulse
 * **[working]** `/f1_ausf_a/keyboard.v` - main file, instantiates all others and reads input
-* **[tested]** `/f2_ausf_d/rom.v` - store words
-* **[tested]** `/f2_ausf_d/wordboard.v` - word sender for function 2
+* **[working]** `/f2_ausf_d/rom.v` - store words
+* **[working]** `/f2_ausf_d/wordboard.v` - word sender for function 2
 * **[???]** `/f3_ausf_a/control_f3.v` - ?
 * **[???]** `/f3_ausf_a/dataControlModule.v` - ?
 
