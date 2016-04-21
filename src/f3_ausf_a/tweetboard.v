@@ -1,4 +1,4 @@
-module wordboard (input wire sysclk, input wire reset, input wire [15:0] ramIn, input wire serialIn, input wire btn_write, output wire out, output wire pulse);
+module tweetboard (input wire sysclk, input wire reset, input wire [15:0] ramIn, input wire serialIn, input wire btn_write, output wire out, output wire pulse);
 
 	 wire btn_deb;                   // debounced inputs
 	 wire reset_deb;
