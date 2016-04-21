@@ -23,7 +23,8 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 	// character pulse
 	clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
     // slow clock
-    clockdiv #(/*19*/25) clockdiv(.sysclk(sysclk),.pulse(slowclk));	
+    //clockdiv #(19) clockdiv(.sysclk(sysclk),.pulse(slowclk)); // for TB
+	 clockdiv #(25) clockdiv(.sysclk(sysclk),.pulse(slowclk));	// for IRL
 	// instantiate rom
 	rom rom(.addr(addr),.data(data));
 	
@@ -52,7 +53,7 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= count + 6'b001100;
 			end
 			4'b0011: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b010111; // 23
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011000; // 24
 				addr <= count;
 			end
 			4'b0100: begin
@@ -60,8 +61,8 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= count + 6'b010111;
 			end
 			4'b0101: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b010100; // 20
-				if(count > 12) addr <= count + 6'b010111;
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010101; // 21
+				if(count > 12) addr <= count + 6'b001011; // + 11
 				else addr <= count;
 			end
 			4'b0110: begin
@@ -69,7 +70,7 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= count + 6'b001100;
 			end
 			4'b0111: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b011111; // 31
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b100000; // 32
 				addr <= count;
 			end
 			4'b1000: begin
@@ -77,18 +78,18 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= count + 6'b011111;
 			end
 			4'b1001: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b010001; // 17
-				if(count > 12) addr <= count + 6'b011111;
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b010010; // 18
+				if(count > 12) addr <= count + 6'b010011; // + 19
 				else addr <= count;
 			end
 			4'b1010: begin
 				if(btn_deb || (slowclk && auto_on)) total <= 6'b010000; // 16
-				if(count > 11) addr <= count + 6'b011111;
+				if(count > 11) addr <= count + 6'b001000; // + 8
 				else addr <= count + 6'b001100;
 			end
 			4'b1011: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b011100; // 28
-				if (count > 23) addr <= count + 6'b011111;
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011101; // 29
+				if (count > 23) addr <= count + 6'b001000; // + 8
 				else addr <= count;
 			end
 			4'b1100: begin
@@ -96,8 +97,8 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= count + 6'b010111;
 			end
 			4'b1101: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b011001; // 25
-				if(count > 12) addr <= count + 6'b010111;
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b011010; // 26
+				if(count > 12) addr <= count + 6'b001011; // + 11
 				else addr <= count;
 			end
 			4'b1110: begin
@@ -105,7 +106,7 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 				addr <= count + 6'b001100;
 			end
 			4'b1111: begin
-				if(btn_deb || (slowclk && auto_on)) total <= 6'b100100; // 36
+				if(btn_deb || (slowclk && auto_on)) total <= 6'b100101; // 37
 				addr <= count;
 			end
 			default: begin
