@@ -19,8 +19,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 	wire out;                   // sooooo what are these?
 	reg delay;
 	reg bs;
-	reg sample_enable;          // enable sampling heartbeat
-	
+    
 	// please stop looking, it may break the code
 	
 	assign in_debug = serialIn;
@@ -34,7 +33,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 	// 10 serial bit pulse
 	clockdiv #(17,52070) writeDiv(.sysclk(sysclk),.pulse(writePulse));
 	// sample that breaks shit
-	sample sample (.sysclk(sysclk),.pulse(pulse),.enable(sample_enable));
+	sample sample (.sysclk(sysclk),.pulse(pulse),.enable(store_latch));
 	// instantiate ram
 	ram ram(.sysclk(sysclk), .write(trigger), .addr(addr), .data_in(toRam), .data_out(ramIn));
 	// MUX for serial writing
@@ -64,7 +63,6 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 			data <= 8'b00000000;
 			bs <= 0;
 			delay <= 0;
-			sample_enable <= 0;
 		end else		
 		begin
 			// increment recieved bit counter
@@ -75,7 +73,6 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 				store_latch <= 1'b1;
 				toRam[15] <= 1; // identifies that data is stored at this address
 				counter <= 1;
-				sample_enable <= 1;
 			end
 			// if a value is stored in this RAM position, print. Else, finished.
 			if (ramIn[15] == 1) 
@@ -118,7 +115,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
                         if (bs == 1) bs <= 0;
                         if(addr <160) begin trigger <= 1; end
                     end
-                    4'b1011: begin if(data != 8'b00001000) begin addr <= addr + 1; end data <= 8'b00000000; counter <= 4'b0000; store_latch <= 0; trigger <= 0; sample_enable <= 0; end
+                    4'b1011: begin if(data != 8'b00001000) begin addr <= addr + 1; end data <= 8'b00000000; counter <= 4'b0000; store_latch <= 0; trigger <= 0; end
                     default: begin toRam <= 16'b0000000000000000; trigger <= 0; data <= 8'b00000000; end	
 				endcase
 				end

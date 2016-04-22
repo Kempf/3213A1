@@ -11,9 +11,7 @@ module tb_tweetboard;
 			.reset(reset),
 			.serialIn(serialIn),
 			.btn_write(btn_write),
-			.out_fin(out),
-			.out_debug(out_debug),
-			.in_debug(in_debug)
+			.out_fin(out)
     );
         
     // 50 MHz clock

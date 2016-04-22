@@ -1,9 +1,9 @@
-module sample (input wire sysclk, input wire enable, output wire pulse);
+module sample (input wire sysclk, input wire enable, output reg pulse);
 
 reg [14:0] count = 0;
 
 always @(posedge sysclk) begin
-    if(enabled) begin
+    if(enable) begin
         if (count == 2603)
             pulse <= 1;
         else
