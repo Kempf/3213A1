@@ -1,15 +1,15 @@
-module keyboard (input wire active, input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn, output wire out, output wire pulse);
+module keyboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn, /*output wire out*/ output reg [7:0] data, output reg start);
 
     wire btn_deb;
-    reg start; //hold time of 5702 clock cycles
-    wire status; //cereal status
+    //reg start; //hold time of 5702 clock cycles
+    //wire status; //cereal status
     wire [3:0] in;
-    reg [7:0] data;
+    //reg [7:0] data;
     
     // inst debouncer
     debouncer debouncer(.sysclk(sysclk),.btn(btn),.btn_deb(btn_deb));
     // inst cereal
-    cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out),.status(status),.pulse(pulse));
+    //cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out));
     
     // assemble input
     assign in[0] = sw1;
@@ -37,12 +37,10 @@ module keyboard (input wire active, input wire sysclk, input wire sw1, input wir
     
     // send
     always @(posedge sysclk) begin
-      if (active) begin
-          if(btn_deb && (data != 8'b00000000)) begin     // start transmission
-              start <= 1'b1;
-          end
-          else start <= 1'b0;                            // release start
-      end
+        if(btn_deb && (data != 8'b00000000)) begin     // start transmission
+            start <= 1'b1;
+        end
+        else start <= 1'b0;                            // release start
     end
     
 endmodule
