@@ -17,6 +17,8 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 	reg trigger;
 	reg reset_latch = 1'b0;
 	
+	// please stop looking, it may break the code
+	
 	assign in_debug = serialIn;
 	assign out_debug = out;
     
