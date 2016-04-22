@@ -11,7 +11,7 @@ module tb_tweetboard;
 			.reset(reset),
 			.serialIn(serialIn),
 			.btn_write(btn_write),
-			.out(out),
+			.out_fin(out),
 			.out_debug(out_debug),
 			.in_debug(in_debug)
     );
@@ -67,10 +67,10 @@ module tb_tweetboard;
 		  #20000 btn_write = 1'b1;
 		  
 		  #380000 btn_write = 1'b0;
-		  
-		  #50000 reset = 1'b1;
+		   
+		  #500000 reset = 1'b1;
 		  #380000 reset = 1'b0;
-		  
+
 		  #20000 serialIn = 1'b0;
 		  #10416 serialIn = 1'b0;
 		  #10416 serialIn = 1'b1;
@@ -93,16 +93,18 @@ module tb_tweetboard;
 		  #10416 serialIn = 1'b1;
 		  #10416 serialIn = 1'b1;
 		  
+		  		  		  //b00001000
 		  #20000 serialIn = 1'b0;
 		  #10416 serialIn = 1'b0;
-		  #10416 serialIn = 1'b1;
+		  #10416 serialIn = 1'b0;
 		  #10416 serialIn = 1'b0;
 		  #10416 serialIn = 1'b1;
 		  #10416 serialIn = 1'b0;
-		  #10416 serialIn = 1'b1;
+		  #10416 serialIn = 1'b0;
+		  #10416 serialIn = 1'b0;
 		  #10416 serialIn = 1'b0;
 		  #10416 serialIn = 1'b1;
-		  #10416 serialIn = 1'b1;
+
 		  
 		  #20000 serialIn = 1'b0;
 		  #10416 serialIn = 1'b0;
@@ -129,7 +131,7 @@ module tb_tweetboard;
 		  
 		  #20000 btn_write = 1'b1;
 		  
-		  #380000 btn_write = 1'b0;
+		  #500000 btn_write = 1'b0;
 		  
 		  
         #2000000 $finish;
