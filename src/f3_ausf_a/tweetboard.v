@@ -67,18 +67,21 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 				toRam[15] <= 1;
 				counter <= 1;
 			end
-			// output things
-			if (btn_latch && writePulse) begin
-				if (ramIn[15] == 0) begin
+			//If a value is stored in this RAM position, print. Else, finished.
+			if (ramIn[15] == 1) 
+			begin
+				addr <= addr + 8'b00000001; // next letter
+				data <= ramIn[7:0];
+				start <= 1'b1; // start transmission
+			end else 
+			begin
+				if (btn_latch && writePulse) begin
 					btn_latch <= 0;
 					start <= 1'b0;
 				end
 			end
-			// steve pls fix this (and delete this comment)
 			if(btn_latch && writePulse && (ramIn[15]==1)) begin
-				addr <= addr + 8'b00000001; // next letter
-				data <= ramIn[7:0];
-				start <= 1'b1; // start transmission
+
 			end
 			// enter output mode
 			if (btn_deb && ~store_latch) begin
@@ -96,8 +99,14 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 				4'b0111: begin toRam[5] <= serialIn; data[5] <= serialIn; end
 				4'b1000: begin toRam[6] <= serialIn; data[6] <= serialIn; end
 				4'b1001: begin toRam[7] <= serialIn; data[7] <= serialIn; end
-				4'b1010: begin trigger <= 1; start <= 1; end
-				4'b1011: begin addr <= addr + 1; toRam <= 16'b0000000000000000; trigger <= 0; start <= 0; data <= 8'b00000000; counter <= 4'b0000; end
+				4'b1010: begin 
+									if(data == 8'b00001000) begin addr <= addr - 1; toRam = 16'b0000000000000000; trigger <= 1; start <= 1; end 
+									if(addr <160) begin trigger <= 1; start <= 1; end
+							end
+				4'b1011: begin 
+									if (addr < 160 && (data != 8'b00001000)) begin addr <= addr + 1; toRam <= 16'b0000000000000000; trigger <= 0; start <= 0; data <= 8'b00000000; counter <= 4'b0000; end
+									if (data == 8'b00001000) begin toRam <= 16'b0000000000000000; trigger <= 0; start <= 0; data <= 8'b00000000; counter <= 4'b0000; end
+							end
 				default: begin toRam <= 16'b0000000000000000; trigger <= 0; start <= 0; data <= 8'b00000000; end	
 				endcase
 				end
