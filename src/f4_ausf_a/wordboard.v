@@ -1,11 +1,11 @@
-module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output wire out);
+module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, /*output wire out*/ output reg start_delayed, output reg [7:0] data);
 
 	wire btn_deb;                   // debounced inputs
 	wire auto_deb;
     reg auto_on = 1'b0;             // auto mode on/off
 	reg start;                      // cereal start trigger
 	wire [3:0] in;                  // switches go here
-	wire [7:0] data;                // ASCII goes here
+	//wire [7:0] data;                // ASCII goes here
 	wire char_pulse;                // heartbeat for outputing characters
     wire slowclk;                   // heartbeat for outputing words in auto mode
 	reg [5:0] count = 6'b000000;    // character count
@@ -13,13 +13,13 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 	reg [5:0] total = 6'b000000;    // total character count
 	reg [5:0] addr;                 // ROM address
     reg [1:0] delay;                // flip-flop for delaying things
-    reg start_delayed;
+    //reg start_delayed;
     
 	// inst debouncer
 	debouncer w_debouncer(.sysclk(sysclk),.btn(btn_write),.btn_deb(btn_deb));
 	debouncer a_debouncer(.sysclk(sysclk),.btn(btn_auto),.btn_deb(auto_deb));
 	// inst cereal
-	cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out));
+	//cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out),.pulse(pulse));
 	// character pulse
 	clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
     // slow clock
