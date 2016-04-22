@@ -1,4 +1,4 @@
-module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output wire out, output wire pulse);
+module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output wire out);
 
 	wire btn_deb;                   // debounced inputs
 	wire auto_deb;
@@ -19,7 +19,7 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 	debouncer w_debouncer(.sysclk(sysclk),.btn(btn_write),.btn_deb(btn_deb));
 	debouncer a_debouncer(.sysclk(sysclk),.btn(btn_auto),.btn_deb(auto_deb));
 	// inst cereal
-	cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out),.pulse(pulse));
+	cereal cereal(.sysclk(sysclk),.data(data),.start(start_delayed),.cereal(out));
 	// character pulse
 	clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
     // slow clock
