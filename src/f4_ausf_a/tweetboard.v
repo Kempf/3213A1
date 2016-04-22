@@ -1,9 +1,9 @@
-module tweetboard (input wire sysclk, input wire active, input wire reset, input wire serialIn, input wire btn_write, output wire out, output wire in_debug, output wire out_debug);
+module tweetboard (input wire sysclk, input wire active, input wire reset, input wire serialIn, input wire btn_write, /*output wire out, output wire in_debug, output wire out_debug*/ output reg [7:0] data, output reg start);
 
 	wire btn_deb;                   // debounced inputs
 	wire reset_deb;
-	reg start;                      // cereal start trigger
-	reg [7:0] data;                // ASCII goes here
+	//reg start;                      // cereal start trigger
+	//reg [7:0] data;                // ASCII goes here
 	//wire char_pulse;                // heartbeat for outputing characters
 	wire pulse;
 	wire writePulse;
@@ -20,14 +20,14 @@ module tweetboard (input wire sysclk, input wire active, input wire reset, input
 	reg trigger;
 	reg reset_latch = 1'b0;
 	
-	assign in_debug = serialIn;
-	assign out_debug = out;
+	//assign in_debug = serialIn;
+	//assign out_debug = out;
     
 	// inst debouncer
 	debouncer w_debouncer(.sysclk(sysclk),.btn(btn_write), .btn_deb(btn_deb));
 	debouncer r_debouncer(.sysclk(sysclk),.btn(reset), .btn_deb(reset_deb));
 	// inst cereal
-	cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out),.pulse(pulse));
+	//cereal cereal(.sysclk(sysclk),.data(data),.start(start),.cereal(out),.pulse(pulse));
 	// character pulse
 	// clockdiv #(17,78105) chardiv(.sysclk(sysclk),.pulse(char_pulse));
 	clockdiv #(17,52070) writeDiv(.sysclk(sysclk),.pulse(writePulse));
