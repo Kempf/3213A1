@@ -3,19 +3,19 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 	wire btn_deb;                   // debounced inputs
 	wire reset_deb;
 	reg start;                      // cereal start trigger
-	reg [7:0] data;                // ASCII goes here
-	wire pulse;
+	reg [7:0] data;                	// ASCII goes here
+	wire pulse;			// hearbeats for sampling and outputting
 	wire writePulse;
 	
 	reg btn_latch = 1'b0;           // write button latch
 	reg [7:0] addr;                 // ROM address
 
-	reg [3:0] counter;
-	wire [15:0] ramIn; // (͡° ͜ʖ ͡°)
-	reg [15:0] toRam;
-	reg store_latch;
-	reg trigger;
-	reg reset_latch = 1'b0;
+	reg [3:0] counter;		// recieved bit counter
+	wire [15:0] ramIn;		// (͡° ͜ʖ ͡°)	RAM output (don't ask me why it's called "in")
+	reg [15:0] toRam;		// input into ram	
+	reg store_latch;		// recieving mode
+	reg trigger;			// RAM write trigger
+	reg reset_latch = 1'b0;		// reset mode
 	
 	// please stop looking, it may break the code
 	
@@ -34,6 +34,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 	
 	// send
 	always @(posedge sysclk) begin  
+		// reset all the RAM
 		if (reset_latch) begin
 				addr <= addr + 1;
 				trigger <= 1;
@@ -43,6 +44,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 				addr <= 0;
 			end
 		end
+		// reset regs
 		if (reset_deb) begin
 			reset_latch <= 1;
 			addr <= 0;
@@ -53,35 +55,37 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 			start <= 0;
 		end else		
 		begin
+			// increment recieved bit counter
 			if (pulse && store_latch) counter <= counter + 1;
+			// end serial frame if 10 bits are recieved
 			if (counter == 4'b1011) begin
 				store_latch <= 1'b0;
 			end
-
+			// start recieving serial
 			if ((serialIn == 0) && (store_latch == 0)) begin 
 				store_latch <= 1'b1;
 				toRam[15] <= 1;
 				counter <= 1;
 			end
-			
+			// output things
 			if (btn_latch && writePulse) begin
 				if (ramIn[15] == 0) begin
 					btn_latch <= 0;
 					start <= 1'b0;
 				end
 			end
-			
+			// steve pls fix this (and delete this comment)
 			if(btn_latch && writePulse && (ramIn[15]==1)) begin
 				addr <= addr + 8'b00000001; // next letter
 				data <= ramIn[7:0];
 				start <= 1'b1; // start transmission
 			end
-			
+			// enter output mode
 			if (btn_deb && ~store_latch) begin
 				btn_latch <= 1;
 				addr <= 4'b0000;
 			end
-		
+			// store recieved bits
 			if (store_latch) begin
 				case (counter) 
 				4'b0010: begin toRam[0] <= serialIn; data[0] <= serialIn; toRam[15] <= 1; end
