@@ -11,7 +11,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 	reg [7:0] addr;                 // ROM address
 
 	reg [3:0] counter;
-	wire [15:0] ramIn;
+	wire [15:0] ramIn; // (͡° ͜ʖ ͡°)
 	reg [15:0] toRam;
 	reg store_latch;
 	reg trigger;
