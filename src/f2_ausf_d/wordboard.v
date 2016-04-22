@@ -37,7 +37,7 @@ module wordboard (input wire sysclk, input wire sw1, input wire sw2, input wire 
 	// send
 	always @(posedge sysclk) begin
         // turn auto output on/off
-        if(auto_deb) auto_on = ~auto_on;
+        if(auto_deb) auto_on <= ~auto_on;
         // set char counts addr for ROM
 		case(in)
 			4'b0000: begin
