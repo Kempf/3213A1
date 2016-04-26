@@ -1,4 +1,4 @@
-module wordboard (input wire active, input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output reg start, output wire [7:0] data, output wire out, output wire pulse);
+module wordboard (input wire active, input wire sysclk, input wire sw1, input wire sw2, input wire sw3, input wire sw4, input wire btn_write, input wire btn_auto, output reg start_delayed, output wire [7:0] data, output wire out, output wire pulse);
 
 	wire btn_deb;                   // debounced inputs
 	wire auto_deb;
@@ -13,7 +13,7 @@ module wordboard (input wire active, input wire sysclk, input wire sw1, input wi
 	reg [5:0] total = 6'b000000;    // total character count
 	reg [5:0] addr;                 // ROM address
     reg [1:0] delay;                // flip-flop for delaying things
-    reg start_delayed;
+    reg start;
     
 	// inst debouncer
 	debouncer w_debouncer(.sysclk(sysclk),.btn(btn_write),.btn_deb(btn_deb));
