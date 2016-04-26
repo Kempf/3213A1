@@ -2,7 +2,7 @@ NET "sysclk" LOC = "C9" ;
 
 NET "out_debug" LOC = "A6" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8;
 NET "in_debug" LOC = "B6" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8;
-NET "out" LOC = "M14" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8;
+NET "out_fin" LOC = "M14" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8;
 NET "serialIn" LOC = "R7" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8;
 
 NET "btn_write" LOC = "V4" | IOSTANDARD = LVTTL | PULLDOWN;  //north
