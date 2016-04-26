@@ -27,9 +27,10 @@ module fullControlSystem(
 	wire serialOut;
 	wire store_latch;
 	wire out_final;
+	wire pulse;
 	
-	assign out_deb1 = out1;
-	assign out_deb2 = out2;
+	assign out_deb1 = out_final_really;
+	assign out_deb2 = pulse;
 	
 	 parameter FUNC1 = 3'b000;
     parameter FUNC2 = 3'b001;
@@ -40,11 +41,10 @@ module fullControlSystem(
 	debouncer SCdebouncer(.sysclk(sysclk),.btn(stateChange), .btn_deb(stateChange_deb));
 	 
 	keyboard keyboard(.sysclk(sysclk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .btn(write), .data(out1), .start(start1));
-	wordboard wordboard(.active(active2), .sysclk(sysclk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .btn_write(write), .btn_auto(auto), .data(out2), .start(start2));
+	wordboard wordboard(.active(active2), .sysclk(sysclk), .sw1(sw1), .sw2(sw2), .sw3(sw3), .sw4(sw4), .btn_write(write), .btn_auto(auto), .data(out2), .start_delayed(start2));
 	tweetboard tweetboard(.active(active3), .sysclk(sysclk), .reset(reset), .serialIn(serialIn), .btn_write(writeNorth), .data(out3), .start(start3), .out_fin(serialOut), .store_latch(store_latch));
-	d_mux d_mux(.a1(active1), .a2(active2), .a3(active3), .o1(out1), .o2(out2), .o3(out3), .o(data_final));
-	s_mux s_mux(.a1(active1), .a2(active2), .a3(active3), .o1(start1), .o2(start2), .o3(start3), .o(start_final));
-	cereal cereal(.sysclk(sysclk),.data(data_final),.start(start_final),.cereal(out_final));
+	d_mux d_mux(.a1(active1), .a2(active2), .a3(active3), .o1(out1), .o2(out2), .o3(out3), .o(data_final), .so1(start1), .so2(start2), .so3(start3), .so(start_final));
+	cereal cereal(.sysclk(sysclk),.data(data_final),.start(start_final),.cereal(out_final),.pulse(pulse));
 	mux mux(.writeOut(out_final), .serialIn(serialOut), .select(store_latch), .out(out_final_really));
 	
 	
