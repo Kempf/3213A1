@@ -1,6 +1,6 @@
 `timescale 10ns / 10ns
 
-module tb_fullControlSystem;
+module tb_switchboard;
 
 	reg sysclk;
 	reg sw1;
@@ -18,7 +18,7 @@ module tb_fullControlSystem;
 	wire out_deb1;
 	wire out_deb2;
 
-    fullControlSystem UUT( 
+    switchboard UUT( 
 			.sysclk(sysclk),
 			.reset(reset),
 			.serialIn(serialIn),
