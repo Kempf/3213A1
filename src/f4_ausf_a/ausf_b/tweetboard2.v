@@ -36,7 +36,7 @@ module tweetboard2 (input wire sysclk, input wire active, input wire reset, inpu
 	// instantiate ram
 	ram ram(.sysclk(sysclk), .write(trigger), .addr(addr), .data_in(toRam), .data_out(ramIn));
 	// MUX for serial writing
-	mux mux_2(.writeOut(out), .serialIn(serialIn), .select(store_latch), .underLimit(underLimit), .out(out_fin));
+	mux_2 mux_2(.writeOut(out), .serialIn(serialIn), .select(store_latch), .underLimit(underLimit), .out(out_fin));
 	
 	// send
 	always @(posedge sysclk) begin  
