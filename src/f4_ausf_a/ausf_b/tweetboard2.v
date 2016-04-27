@@ -102,17 +102,17 @@ module tweetboard2 (input wire sysclk, input wire active, input wire reset, inpu
 				// store recieved bits
 				if (store_latch) begin
 					// increment recieved bit counter
-					if (count_5207 == 2507) begin counter <= counter + 1; count_5207 <= 13'b0000000000000000; end  //1010001010111 == 2507
-					else count_5207 <= count_5207 + 1;
+					if (count_5207 == 5207) begin counter <= counter + 1; count_5207 <= 13'b0000000000000000; end  //1010001010111 == 2507
+					else begin count_5207 <= count_5207 + 1;
 					case (counter) 
 							  4'b0000: begin toRam <= 16'b0000000000000000; trigger <= 0; data <= 8'b00000000; end
 							  4'b0010: begin if (count_5207 == 2600) begin toRam[0] <= serialIn; toRam[15] <= 1; end end
-							  4'b0011: begin if (count_5207 == 2600) begin toRam[1] <= serialIn; toRam[15] <= 1; end end
-							  4'b0100: begin if (count_5207 == 2600) begin toRam[2] <= serialIn; toRam[15] <= 1; end end
-							  4'b0101: begin if (count_5207 == 2600) begin toRam[3] <= serialIn; toRam[15] <= 1; end end
-							  4'b0110: begin if (count_5207 == 2600) begin toRam[4] <= serialIn; toRam[15] <= 1; end end
-							  4'b0111: begin if (count_5207 == 2600) begin toRam[5] <= serialIn; toRam[15] <= 1; end end
-							  4'b1000: begin if (count_5207 == 2600) begin toRam[6] <= serialIn; toRam[15] <= 1; end end
+							  4'b0011: begin if (count_5207 == 2600) begin toRam[1] <= serialIn; end end
+							  4'b0100: begin if (count_5207 == 2600) begin toRam[2] <= serialIn; end end
+							  4'b0101: begin if (count_5207 == 2600) begin toRam[3] <= serialIn; end end
+							  4'b0110: begin if (count_5207 == 2600) begin toRam[4] <= serialIn; end end
+							  4'b0111: begin if (count_5207 == 2600) begin toRam[5] <= serialIn; end end
+							  4'b1000: begin if (count_5207 == 2600) begin toRam[6] <= serialIn; end end
 							  4'b1001: begin 
 									if((toRam == 16'b1000000000001000) && (bs == 0) && (addr != 0)) begin toRam <= 16'b0000000000000000; addr <= addr - 1; bs <= 1; end
 									else if ((toRam == 16'b1000000000001000) && (addr == 0)) begin toRam <= 16'b0000000000000000; data <= 8'b00000000; counter <= 4'b0000; store_latch <= 0; trigger <= 0; bs <= 0; end
@@ -123,6 +123,7 @@ module tweetboard2 (input wire sysclk, input wire active, input wire reset, inpu
 							  4'b1011: begin if(toRam != 16'b1000000000001000) begin addr <= addr + 1; end data <= 8'b00000000; counter <= 4'b0000; store_latch <= 0; trigger <= 0; bs <= 0; end
 							  default: begin toRam <= 16'b0000000000000000; trigger <= 0; data <= 8'b00000000; bs <= 0; end	
 						endcase
+					end
 					end
 				end
 		end
