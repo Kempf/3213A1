@@ -98,7 +98,7 @@ module tweetboard (input wire sysclk, input wire reset, input wire serialIn, inp
 			// store recieved bits
 			if (store_latch) begin
 				// increment recieved bit counter
-				if (count_5207 == 5207) begin counter <= counter + 1; count_5207 <= 13'b0000000000000000; end  //1010001010111 == 2507
+				if (count_5207 == 5207) begin counter <= counter + 1; count_5207 <= 13'b0000000000000; end  //1010001010111 == 2507
 				else begin count_5207 <= count_5207 + 1;
 				case (counter) 
 						  4'b0000: begin toRam <= 16'b0000000000000000; trigger <= 0; data <= 8'b00000000; end
