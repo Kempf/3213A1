@@ -29,8 +29,8 @@ module switchboard(
 	wire out_final;
 	wire pulse;
 	
-	//assign out_deb1 = out_final_really;
-	//assign out_deb2 = pulse;
+	assign out_deb1 = out_final_really;
+	assign out_deb2 = pulse;
 	
 	parameter FUNC1 = 3'b000;
 	parameter FUNC2 = 3'b001;
